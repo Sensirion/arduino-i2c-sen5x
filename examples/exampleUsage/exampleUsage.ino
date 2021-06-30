@@ -1,9 +1,4 @@
 /*
- * I2C-Generator: 0.2.0
- * Yaml Version: 0.5.1
- * Template Version: 0.7.0-8-gbdfd7a4
- */
-/*
  * Copyright (c) 2021, Sensirion AG
  * All rights reserved.
  *
@@ -40,35 +35,9 @@
 
 SensirionI2CSen55 sen55;
 
-// TODO: DRIVER_GENERATOR Add missing commands and make printout more pretty
-
-void setup() {
-
-    Serial.begin(115200);
-    while (!Serial) {
-        delay(100);
-    }
-
-    Wire.begin();
-
+void printModuleVersions() {
     uint16_t error;
     char errorMessage[256];
-
-    sen55.begin(Wire);
-
-    unsigned char serialNumber[32];
-    uint8_t serialNumberSize = 32;
-
-    error = sen55.getSerialNumber(serialNumber, serialNumberSize);
-
-    if (error) {
-        Serial.print("Error trying to execute getSerialNumber(): ");
-        errorToString(error, errorMessage, 256);
-        Serial.println(errorMessage);
-    } else {
-        Serial.print("SerialNumber:");
-        Serial.println((char*)serialNumber);
-    }
 
     unsigned char productName[32];
     uint8_t productNameSize = 32;
@@ -95,40 +64,67 @@ void setup() {
     error = sen55.getVersion(firmwareMajor, firmwareMinor, firmwareDebug,
                              hardwareMajor, hardwareMinor, protocolMajor,
                              protocolMinor);
-
     if (error) {
         Serial.print("Error trying to execute getVersion(): ");
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("FirmwareMajor:");
+        Serial.print("Firmware: ");
         Serial.print(firmwareMajor);
-        Serial.print("\t");
-        Serial.print("FirmwareMinor:");
+        Serial.print(".");
         Serial.print(firmwareMinor);
-        Serial.print("\t");
-        Serial.print("FirmwareDebug:");
-        Serial.print(firmwareDebug);
-        Serial.print("\t");
-        Serial.print("HardwareMajor:");
+        Serial.print(", ");
+
+        Serial.print("Hardware: ");
         Serial.print(hardwareMajor);
-        Serial.print("\t");
-        Serial.print("HardwareMinor:");
-        Serial.print(hardwareMinor);
-        Serial.print("\t");
-        Serial.print("ProtocolMajor:");
-        Serial.print(protocolMajor);
-        Serial.print("\t");
-        Serial.print("ProtocolMinor:");
-        Serial.print(protocolMinor);
-        Serial.print("\t");
-        Serial.println();
+        Serial.print(".");
+        Serial.println(hardwareMinor);
+    }
+}
+
+void printSerialNumber() {
+    uint16_t error;
+    char errorMessage[256];
+    unsigned char serialNumber[32];
+    uint8_t serialNumberSize = 32;
+
+    error = sen55.getSerialNumber(serialNumber, serialNumberSize);
+    if (error) {
+        Serial.print("Error trying to execute getSerialNumber(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    } else {
+        Serial.print("SerialNumber:");
+        Serial.println((char*)serialNumber);
+    }
+}
+
+void setup() {
+
+    Serial.begin(115200);
+    while (!Serial) {
+        delay(100);
     }
 
+    Wire.begin();
+
+    sen55.begin(Wire);
+
+    uint16_t error;
+    char errorMessage[256];
+    error = sen55.deviceReset();
+    if (error) {
+        Serial.print("Error trying to execute deviceReset(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    }
+
+    // Print SEN55 module information
+    printSerialNumber();
+    printModuleVersions();
+
     // Start Measurement
-
     error = sen55.startMeasurement();
-
     if (error) {
         Serial.print("Error trying to execute startMeasurement(): ");
         errorToString(error, errorMessage, 256);
@@ -140,11 +136,9 @@ void loop() {
     uint16_t error;
     char errorMessage[256];
 
-    // TODO: DRIVER_GENERATOR Adjust measurement delay
     delay(1000);
-    // TODO: DRIVER_GENERATOR Add scale and offset to printed measurement values
-    // Read Measurement
 
+    // Read Measurement
     uint16_t massConcentrationPm1p0;
     uint16_t massConcentrationPm2p5;
     uint16_t massConcentrationPm4p0;
@@ -165,27 +159,27 @@ void loop() {
         Serial.println(errorMessage);
     } else {
         Serial.print("MassConcentrationPm1p0:");
-        Serial.print(massConcentrationPm1p0);
+        Serial.print(massConcentrationPm1p0 / 10.0);
         Serial.print("\t");
         Serial.print("MassConcentrationPm2p5:");
-        Serial.print(massConcentrationPm2p5);
+        Serial.print(massConcentrationPm2p5 / 10.0);
         Serial.print("\t");
         Serial.print("MassConcentrationPm4p0:");
-        Serial.print(massConcentrationPm4p0);
+        Serial.print(massConcentrationPm4p0 / 10.0);
         Serial.print("\t");
         Serial.print("MassConcentrationPm10p0:");
-        Serial.print(massConcentrationPm10p0);
+        Serial.print(massConcentrationPm10p0 / 10.0);
         Serial.print("\t");
         Serial.print("AmbientHumidity:");
-        Serial.print(ambientHumidity);
+        Serial.print(ambientHumidity / 100.0);
         Serial.print("\t");
         Serial.print("AmbientTemperature:");
-        Serial.print(ambientTemperature);
+        Serial.print(ambientTemperature / 200.0);
         Serial.print("\t");
         Serial.print("VocIndex:");
-        Serial.print(vocIndex);
+        Serial.print(vocIndex / 10.0);
         Serial.print("\t");
         Serial.print("NoxIndex:");
-        Serial.println(noxIndex);
+        Serial.println(noxIndex / 10.0);
     }
 }
