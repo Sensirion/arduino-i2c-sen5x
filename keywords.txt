@@ -1,0 +1,37 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SensirionI2CSen55	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+startMeasurement	KEYWORD2
+stopMeasurement	KEYWORD2
+readDataReady	KEYWORD2
+readMeasuredPmValuesFloat	KEYWORD2
+readMeasuredValues	KEYWORD2
+readMeasuredRawValues	KEYWORD2
+startFanCleaning	KEYWORD2
+setFanAutoCleaningInterval	KEYWORD2
+getFanAutoCleaningInterval	KEYWORD2
+getProductName	KEYWORD2
+getSerialNumber	KEYWORD2
+getVersion	KEYWORD2
+readDeviceStatus	KEYWORD2
+readAndClearDeviceStatus	KEYWORD2
+deviceReset	KEYWORD2
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+sen55	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
