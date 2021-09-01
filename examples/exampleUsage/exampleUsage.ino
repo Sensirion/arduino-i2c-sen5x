@@ -33,6 +33,16 @@
 #include <SensirionI2CSen55.h>
 #include <Wire.h>
 
+// The used commands use up to 48 bytes. On some Arduino's the default buffer
+// space is not large enough
+#define MAXBUF_REQUIREMENT 48
+
+#if (defined(I2C_BUFFER_LENGTH) &&                 \
+     (I2C_BUFFER_LENGTH >= MAXBUF_REQUIREMENT)) || \
+    (defined(BUFFER_LENGTH) && BUFFER_LENGTH >= MAXBUF_REQUIREMENT)
+#define USE_PRODUCT_INFO
+#endif
+
 SensirionI2CSen55 sen55;
 
 void printModuleVersions() {
@@ -119,9 +129,11 @@ void setup() {
         Serial.println(errorMessage);
     }
 
-    // Print SEN55 module information
+// Print SEN55 module information if i2c buffers are large enough
+#ifdef USE_PRODUCT_INFO
     printSerialNumber();
     printModuleVersions();
+#endif
 
     // Start Measurement
     error = sen55.startMeasurement();
@@ -137,6 +149,31 @@ void loop() {
     char errorMessage[256];
 
     delay(1000);
+
+    error = sen55.setTemperatureOffsetParameters(0, 10000, 10);
+    if (error) {
+        Serial.print("Error executing setTemperatureOffsetParameters: ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    }
+    int16_t tempOffset = 0;
+    int16_t slope = 0;
+    uint16_t timeConst = 0;
+    error = sen55.getTemperatureOffsetParameters(tempOffset, slope, timeConst);
+    if (error) {
+        Serial.print("Error executing getTemperatureOffsetParameters: ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    } else {
+        Serial.print("Temperature offset: ");
+        Serial.print(tempOffset);
+        Serial.print("\t");
+        Serial.print("Slope: ");
+        Serial.print(slope);
+        Serial.print("\t");
+        Serial.print("Time constant: ");
+        Serial.println(timeConst);
+    }
 
     // Read Measurement
     uint16_t massConcentrationPm1p0;
