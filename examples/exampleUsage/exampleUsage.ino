@@ -1,4 +1,9 @@
 /*
+ * I2C-Generator: 0.3.0
+ * Yaml Version: 2.1.3
+ * Template Version: 0.7.0-112-g190ecaa
+ */
+/*
  * Copyright (c) 2021, Sensirion AG
  * All rights reserved.
  *
@@ -30,7 +35,7 @@
  */
 
 #include <Arduino.h>
-#include <SensirionI2CSen55.h>
+#include <SensirionI2CSen5x.h>
 #include <Wire.h>
 
 // The used commands use up to 48 bytes. On some Arduino's the default buffer
@@ -43,7 +48,7 @@
 #define USE_PRODUCT_INFO
 #endif
 
-SensirionI2CSen55 sen55;
+SensirionI2CSen5x sen5x;
 
 void printModuleVersions() {
     uint16_t error;
@@ -52,7 +57,7 @@ void printModuleVersions() {
     unsigned char productName[32];
     uint8_t productNameSize = 32;
 
-    error = sen55.getProductName(productName, productNameSize);
+    error = sen5x.getProductName(productName, productNameSize);
 
     if (error) {
         Serial.print("Error trying to execute getProductName(): ");
@@ -71,7 +76,7 @@ void printModuleVersions() {
     uint8_t protocolMajor;
     uint8_t protocolMinor;
 
-    error = sen55.getVersion(firmwareMajor, firmwareMinor, firmwareDebug,
+    error = sen5x.getVersion(firmwareMajor, firmwareMinor, firmwareDebug,
                              hardwareMajor, hardwareMinor, protocolMajor,
                              protocolMinor);
     if (error) {
@@ -98,7 +103,7 @@ void printSerialNumber() {
     unsigned char serialNumber[32];
     uint8_t serialNumberSize = 32;
 
-    error = sen55.getSerialNumber(serialNumber, serialNumberSize);
+    error = sen5x.getSerialNumber(serialNumber, serialNumberSize);
     if (error) {
         Serial.print("Error trying to execute getSerialNumber(): ");
         errorToString(error, errorMessage, 256);
@@ -118,11 +123,11 @@ void setup() {
 
     Wire.begin();
 
-    sen55.begin(Wire);
+    sen5x.begin(Wire);
 
     uint16_t error;
     char errorMessage[256];
-    error = sen55.deviceReset();
+    error = sen5x.deviceReset();
     if (error) {
         Serial.print("Error trying to execute deviceReset(): ");
         errorToString(error, errorMessage, 256);
@@ -136,7 +141,7 @@ void setup() {
 #endif
 
     // Start Measurement
-    error = sen55.startMeasurement();
+    error = sen5x.startMeasurement();
     if (error) {
         Serial.print("Error trying to execute startMeasurement(): ");
         errorToString(error, errorMessage, 256);
@@ -150,7 +155,7 @@ void loop() {
 
     delay(1000);
 
-    error = sen55.setTemperatureOffsetParameters(0, 10000, 10);
+    error = sen5x.setTemperatureOffsetParameters(0, 10000, 10);
     if (error) {
         Serial.print("Error executing setTemperatureOffsetParameters: ");
         errorToString(error, errorMessage, 256);
@@ -159,7 +164,7 @@ void loop() {
     int16_t tempOffset = 0;
     int16_t slope = 0;
     uint16_t timeConst = 0;
-    error = sen55.getTemperatureOffsetParameters(tempOffset, slope, timeConst);
+    error = sen5x.getTemperatureOffsetParameters(tempOffset, slope, timeConst);
     if (error) {
         Serial.print("Error executing getTemperatureOffsetParameters: ");
         errorToString(error, errorMessage, 256);
@@ -185,7 +190,7 @@ void loop() {
     int16_t vocIndex;
     int16_t noxIndex;
 
-    error = sen55.readMeasuredValues(
+    error = sen5x.readMeasuredValues(
         massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
         massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
         noxIndex);
