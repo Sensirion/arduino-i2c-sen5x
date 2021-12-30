@@ -10,7 +10,7 @@ compile_test:
     before_script:
         - rm -rf ../sensirion-core-arduino-library
     script:
-        - git clone --depth 1 --branch 0.4.3 https://github.com/Sensirion/arduino-core.git ../sensirion-core-arduino-library
+        - git clone --depth 1 --branch 0.5.2 https://github.com/Sensirion/arduino-core.git ../sensirion-core-arduino-library
         - arduino-cli compile --libraries=".." --warnings all --fqbn arduino:samd:mkrzero examples/exampleUsage
         - arduino-cli compile --libraries=".." --warnings all --fqbn arduino:avr:mega examples/exampleUsage
         - arduino-cli compile --libraries=".." --warnings all --fqbn arduino:avr:nano examples/exampleUsage
@@ -25,7 +25,6 @@ syntax_check:
   tags: [linux, docker]
   script:
     - find . -type f -iregex ".*\.\(c\|h\|cpp\|ino\)" -exec clang-format-6.0 -i -style=file {} \; && git diff --exit-code
-
 
 cppcheck:
   stage: validate
