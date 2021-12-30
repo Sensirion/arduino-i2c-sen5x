@@ -140,6 +140,17 @@ void setup() {
     printModuleVersions();
 #endif
 
+    // set RHT acceleration mode
+    //  0: Default / Air Purifier / IAQ (slow)
+    //  1: IAQ (fast)
+    //  2: IAQ (medium)
+    error = sen5x.setRhtAccelerationMode(0);
+    if (error) {
+        Serial.print("Error trying to execute setRhtAccelerationMode(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    }
+
     // Start Measurement
     error = sen5x.startMeasurement();
     if (error) {
@@ -154,31 +165,6 @@ void loop() {
     char errorMessage[256];
 
     delay(1000);
-
-    error = sen5x.setTemperatureOffsetParameters(0, 10000, 10);
-    if (error) {
-        Serial.print("Error executing setTemperatureOffsetParameters: ");
-        errorToString(error, errorMessage, 256);
-        Serial.println(errorMessage);
-    }
-    int16_t tempOffset = 0;
-    int16_t slope = 0;
-    uint16_t timeConst = 0;
-    error = sen5x.getTemperatureOffsetParameters(tempOffset, slope, timeConst);
-    if (error) {
-        Serial.print("Error executing getTemperatureOffsetParameters: ");
-        errorToString(error, errorMessage, 256);
-        Serial.println(errorMessage);
-    } else {
-        Serial.print("Temperature offset: ");
-        Serial.print(tempOffset);
-        Serial.print("\t");
-        Serial.print("Slope: ");
-        Serial.print(slope);
-        Serial.print("\t");
-        Serial.print("Time constant: ");
-        Serial.println(timeConst);
-    }
 
     // Read Measurement
     uint16_t massConcentrationPm1p0;
@@ -222,6 +208,10 @@ void loop() {
         Serial.print(vocIndex / 10.0);
         Serial.print("\t");
         Serial.print("NoxIndex:");
-        Serial.println(noxIndex / 10.0);
+        if (noxIndex == 0x7FFF) {
+            Serial.println("n/a");
+        } else {
+            Serial.println(noxIndex / 10.0);
+        }
     }
 }
