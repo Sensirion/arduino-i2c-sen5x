@@ -121,6 +121,60 @@ class SensirionI2CSen5x {
     data is available since the last read operation. If no new data is
     available, the previous values will be returned again. If no data is
     available at all (e.g. measurement not running for at least one
+    second), all values will be NAN.
+     *
+     * @param massConcentrationPm1p0  PM1.0 [µg/m³]
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param massConcentrationPm2p5  PM2.5 [µg/m³]
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param massConcentrationPm4p0  PM4.0 [µg/m³]
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param massConcentrationPm10p0  PM10.0 [µg/m³]
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param ambientHumidity RH [%]
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param ambientTemperature T [°C]
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param vocIndex  VOC Index
+
+    *Note: If this value is unknown, NAN is returned.*
+     *
+     * @param noxIndex  NOx Index
+
+    *Note: If this value is unknown, NAN is returned. During
+    the first 10..11 seconds after power-on or device reset, this
+    value will be NAN as well.*
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t readMeasuredValues(float& massConcentrationPm1p0,
+                                float& massConcentrationPm2p5,
+                                float& massConcentrationPm4p0,
+                                float& massConcentrationPm10p0,
+                                float& ambientHumidity,
+                                float& ambientTemperature, float& vocIndex,
+                                float& noxIndex);
+
+    /**
+     * readMeasuredValuesAsIntegers() - Returns the measured values
+     * without scaling factors applied.
+
+    The command 0x0202 \"Read Data Ready\" can be used to check if new
+    data is available since the last read operation. If no new data is
+    available, the previous values will be returned again. If no data is
+    available at all (e.g. measurement not running for at least one
     second), all values will be at their upper limit (0xFFFF for `uint16`,
     0x7FFF for `int16`).
      *
@@ -166,13 +220,13 @@ class SensirionI2CSen5x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t readMeasuredValues(uint16_t& massConcentrationPm1p0,
-                                uint16_t& massConcentrationPm2p5,
-                                uint16_t& massConcentrationPm4p0,
-                                uint16_t& massConcentrationPm10p0,
-                                int16_t& ambientHumidity,
-                                int16_t& ambientTemperature, int16_t& vocIndex,
-                                int16_t& noxIndex);
+    uint16_t readMeasuredValuesAsIntegers(uint16_t& massConcentrationPm1p0,
+                                          uint16_t& massConcentrationPm2p5,
+                                          uint16_t& massConcentrationPm4p0,
+                                          uint16_t& massConcentrationPm10p0,
+                                          int16_t& ambientHumidity,
+                                          int16_t& ambientTemperature,
+                                          int16_t& vocIndex, int16_t& noxIndex);
 
     /**
      * readMeasuredRawValues() - Returns the measured raw values.
@@ -216,61 +270,121 @@ class SensirionI2CSen5x {
     data is available since the last read operation. If no new data is
     available, the previous values will be returned again. If no data
     is available at all (e.g. measurement not running for at least one
-    second), all values will be 0xFFFF.
+    second), all values will be NAN.
      *
-     * @param massConcentrationPm1p0 Value is scaled with factor 10: PM1.0
-    [µg/m³] = value / 10
+     * @param massConcentrationPm1p0  PM1.0 [µg/m³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param massConcentrationPm2p5 Value is scaled with factor 10: PM2.5
-    [µg/m³] = value / 10
+     * @param massConcentrationPm2p5  PM2.5 [µg/m³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param massConcentrationPm4p0 Value is scaled with factor 10: PM4.0
-    [µg/m³] = value / 10
+     * @param massConcentrationPm4p0  PM4.0 [µg/m³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param massConcentrationPm10p0 Value is scaled with factor 10: PM10.0
-    [µg/m³] = value / 10
+     * @param massConcentrationPm10p0  PM10.0 [µg/m³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param numberConcentrationPm0p5 Value is scaled with factor 10: PM0.5
-    [#/cm³] = value / 10
+     * @param numberConcentrationPm0p5  PM0.5 [#/cm³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param numberConcentrationPm1p0 Value is scaled with factor 10: PM1.0
-    [#/cm³] = value / 10
+     * @param numberConcentrationPm1p0  PM1.0 [#/cm³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param numberConcentrationPm2p5 Value is scaled with factor 10: PM2.5
-    [#/cm³] = value / 10
+     * @param numberConcentrationPm2p5  PM2.5 [#/cm³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param numberConcentrationPm4p0 Value is scaled with factor 10: PM4.0
-    [#/cm³] = value / 10
+     * @param numberConcentrationPm4p0  PM4.0 [#/cm³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param numberConcentrationPm10p0 Value is scaled with factor 10: PM10.0
-    [#/cm³] = value / 10
+     * @param numberConcentrationPm10p0  PM10.0 [#/cm³]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
-     * @param typicalParticleSize Value is scaled with factor 1000: Size [µm] =
-    value / 1000
+     * @param typicalParticleSize Size [µm]
 
-    *Note: If this value is unknown, 0xFFFF is returned.*
+    *Note: If this value is unknown, NAN is returned.*
      *
      * @return 0 on success, an error code otherwise
      */
     uint16_t readMeasuredPmValues(
+        float& massConcentrationPm1p0, float& massConcentrationPm2p5,
+        float& massConcentrationPm4p0, float& massConcentrationPm10p0,
+        float& numberConcentrationPm0p5, float& numberConcentrationPm1p0,
+        float& numberConcentrationPm2p5, float& numberConcentrationPm4p0,
+        float& numberConcentrationPm10p0, float& typicalParticleSize);
+
+    /**
+         * readMeasuredPmValuesAsIntegers() - Returns the measured particulate
+        matter values.
+
+        The command 0x0202 \"Read Data Ready\" can be used to check if new
+        data is available since the last read operation. If no new data is
+        available, the previous values will be returned again. If no data
+        is available at all (e.g. measurement not running for at least one
+        second), all values will be 0xFFFF.
+         *
+         * @param massConcentrationPm1p0 Value is scaled with factor 10: PM1.0
+        [µg/m³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param massConcentrationPm2p5 Value is scaled with factor 10: PM2.5
+        [µg/m³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param massConcentrationPm4p0 Value is scaled with factor 10: PM4.0
+        [µg/m³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param massConcentrationPm10p0 Value is scaled with factor 10: PM10.0
+        [µg/m³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param numberConcentrationPm0p5 Value is scaled with factor 10: PM0.5
+        [#/cm³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param numberConcentrationPm1p0 Value is scaled with factor 10: PM1.0
+        [#/cm³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param numberConcentrationPm2p5 Value is scaled with factor 10: PM2.5
+        [#/cm³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param numberConcentrationPm4p0 Value is scaled with factor 10: PM4.0
+        [#/cm³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param numberConcentrationPm10p0 Value is scaled with factor 10:
+       PM10.0
+        [#/cm³] = value / 10
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @param typicalParticleSize Value is scaled with factor 1000: Size
+       [µm] = value / 1000
+
+        *Note: If this value is unknown, 0xFFFF is returned.*
+         *
+         * @return 0 on success, an error code otherwise
+         */
+    uint16_t readMeasuredPmValuesAsIntegers(
         uint16_t& massConcentrationPm1p0, uint16_t& massConcentrationPm2p5,
         uint16_t& massConcentrationPm4p0, uint16_t& massConcentrationPm10p0,
         uint16_t& numberConcentrationPm0p5, uint16_t& numberConcentrationPm1p0,

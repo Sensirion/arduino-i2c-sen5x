@@ -40,8 +40,11 @@
 #include "Arduino.h"
 #include "SensirionCore.h"
 #include <Wire.h>
+#include <math.h>
 
 #define SEN5X_I2C_ADDRESS 0x69
+#define UINT_INVALID 0xFFFF
+#define INT_INVALID 0x7FFF
 
 SensirionI2CSen5x::SensirionI2CSen5x() {
 }
@@ -114,6 +117,54 @@ uint16_t SensirionI2CSen5x::readDataReady(bool& dataReady) {
 }
 
 uint16_t SensirionI2CSen5x::readMeasuredValues(
+    float& massConcentrationPm1p0, float& massConcentrationPm2p5,
+    float& massConcentrationPm4p0, float& massConcentrationPm10p0,
+    float& ambientHumidity, float& ambientTemperature, float& vocIndex,
+    float& noxIndex) {
+
+    uint16_t error = 0;
+    uint16_t massConcentrationPm1p0Int;
+    uint16_t massConcentrationPm2p5Int;
+    uint16_t massConcentrationPm4p0Int;
+    uint16_t massConcentrationPm10p0Int;
+    int16_t ambientHumidityInt;
+    int16_t ambientTemperatureInt;
+    int16_t vocIndexInt;
+    int16_t noxIndexInt;
+
+    error = readMeasuredValuesAsIntegers(
+        massConcentrationPm1p0Int, massConcentrationPm2p5Int,
+        massConcentrationPm4p0Int, massConcentrationPm10p0Int,
+        ambientHumidityInt, ambientTemperatureInt, vocIndexInt, noxIndexInt);
+
+    if (error) {
+        return error;
+    }
+
+    massConcentrationPm1p0 = massConcentrationPm1p0Int == UINT_INVALID
+                                 ? NAN
+                                 : massConcentrationPm1p0Int / 10.0f;
+    massConcentrationPm2p5 = massConcentrationPm2p5Int == UINT_INVALID
+                                 ? NAN
+                                 : massConcentrationPm2p5Int / 10.0f;
+    massConcentrationPm4p0 = massConcentrationPm4p0Int == UINT_INVALID
+                                 ? NAN
+                                 : massConcentrationPm4p0Int / 10.0f;
+    massConcentrationPm10p0 = massConcentrationPm10p0Int == UINT_INVALID
+                                  ? NAN
+                                  : massConcentrationPm10p0Int / 10.0f;
+    ambientHumidity =
+        ambientHumidityInt == INT_INVALID ? NAN : ambientHumidityInt / 100.0f;
+    ambientTemperature = ambientTemperatureInt == INT_INVALID
+                             ? NAN
+                             : ambientTemperatureInt / 200.0f;
+    vocIndex = vocIndexInt == INT_INVALID ? NAN : vocIndexInt / 10.0f;
+    noxIndex = noxIndexInt == INT_INVALID ? NAN : noxIndexInt / 10.0f;
+
+    return NoError;
+}
+
+uint16_t SensirionI2CSen5x::readMeasuredValuesAsIntegers(
     uint16_t& massConcentrationPm1p0, uint16_t& massConcentrationPm2p5,
     uint16_t& massConcentrationPm4p0, uint16_t& massConcentrationPm10p0,
     int16_t& ambientHumidity, int16_t& ambientTemperature, int16_t& vocIndex,
@@ -181,6 +232,70 @@ uint16_t SensirionI2CSen5x::readMeasuredRawValues(int16_t& rawHumidity,
 }
 
 uint16_t SensirionI2CSen5x::readMeasuredPmValues(
+    float& massConcentrationPm1p0, float& massConcentrationPm2p5,
+    float& massConcentrationPm4p0, float& massConcentrationPm10p0,
+    float& numberConcentrationPm0p5, float& numberConcentrationPm1p0,
+    float& numberConcentrationPm2p5, float& numberConcentrationPm4p0,
+    float& numberConcentrationPm10p0, float& typicalParticleSize) {
+
+    uint16_t error = 0;
+    uint16_t massConcentrationPm1p0Int;
+    uint16_t massConcentrationPm2p5Int;
+    uint16_t massConcentrationPm4p0Int;
+    uint16_t massConcentrationPm10p0Int;
+    uint16_t numberConcentrationPm0p5Int;
+    uint16_t numberConcentrationPm1p0Int;
+    uint16_t numberConcentrationPm2p5Int;
+    uint16_t numberConcentrationPm4p0Int;
+    uint16_t numberConcentrationPm10p0Int;
+    uint16_t typicalParticleSizeInt;
+
+    error = readMeasuredPmValuesAsIntegers(
+        massConcentrationPm1p0Int, massConcentrationPm2p5Int,
+        massConcentrationPm4p0Int, massConcentrationPm10p0Int,
+        numberConcentrationPm0p5Int, numberConcentrationPm1p0Int,
+        numberConcentrationPm2p5Int, numberConcentrationPm4p0Int,
+        numberConcentrationPm10p0Int, typicalParticleSizeInt);
+
+    if (error) {
+        return error;
+    }
+
+    massConcentrationPm1p0 = massConcentrationPm1p0Int == UINT_INVALID
+                                 ? NAN
+                                 : massConcentrationPm1p0Int / 10.0f;
+    massConcentrationPm2p5 = massConcentrationPm2p5Int == UINT_INVALID
+                                 ? NAN
+                                 : massConcentrationPm2p5Int / 10.0f;
+    massConcentrationPm4p0 = massConcentrationPm4p0Int == UINT_INVALID
+                                 ? NAN
+                                 : massConcentrationPm4p0Int / 10.0f;
+    massConcentrationPm10p0 = massConcentrationPm10p0Int == UINT_INVALID
+                                  ? NAN
+                                  : massConcentrationPm10p0Int / 10.0f;
+    numberConcentrationPm0p5 = numberConcentrationPm0p5Int == UINT_INVALID
+                                   ? NAN
+                                   : numberConcentrationPm0p5Int / 10.0f;
+    numberConcentrationPm1p0 = numberConcentrationPm1p0Int == UINT_INVALID
+                                   ? NAN
+                                   : numberConcentrationPm1p0Int / 10.0f;
+    numberConcentrationPm2p5 = numberConcentrationPm2p5Int == UINT_INVALID
+                                   ? NAN
+                                   : numberConcentrationPm2p5Int / 10.0f;
+    numberConcentrationPm4p0 = numberConcentrationPm4p0Int == UINT_INVALID
+                                   ? NAN
+                                   : numberConcentrationPm4p0Int / 10.0f;
+    numberConcentrationPm10p0 = numberConcentrationPm10p0Int == UINT_INVALID
+                                    ? NAN
+                                    : numberConcentrationPm10p0Int / 10.0f;
+    typicalParticleSize = typicalParticleSizeInt == UINT_INVALID
+                              ? NAN
+                              : typicalParticleSizeInt / 10.0f;
+
+    return NoError;
+}
+
+uint16_t SensirionI2CSen5x::readMeasuredPmValuesAsIntegers(
     uint16_t& massConcentrationPm1p0, uint16_t& massConcentrationPm2p5,
     uint16_t& massConcentrationPm4p0, uint16_t& massConcentrationPm10p0,
     uint16_t& numberConcentrationPm0p5, uint16_t& numberConcentrationPm1p0,

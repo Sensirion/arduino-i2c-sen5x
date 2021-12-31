@@ -167,14 +167,14 @@ void loop() {
     delay(1000);
 
     // Read Measurement
-    uint16_t massConcentrationPm1p0;
-    uint16_t massConcentrationPm2p5;
-    uint16_t massConcentrationPm4p0;
-    uint16_t massConcentrationPm10p0;
-    int16_t ambientHumidity;
-    int16_t ambientTemperature;
-    int16_t vocIndex;
-    int16_t noxIndex;
+    float massConcentrationPm1p0;
+    float massConcentrationPm2p5;
+    float massConcentrationPm4p0;
+    float massConcentrationPm10p0;
+    float ambientHumidity;
+    float ambientTemperature;
+    float vocIndex;
+    float noxIndex;
 
     error = sen5x.readMeasuredValues(
         massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
@@ -187,31 +187,71 @@ void loop() {
         Serial.println(errorMessage);
     } else {
         Serial.print("MassConcentrationPm1p0:");
-        Serial.print(massConcentrationPm1p0 / 10.0);
+        Serial.print(massConcentrationPm1p0);
         Serial.print("\t");
         Serial.print("MassConcentrationPm2p5:");
-        Serial.print(massConcentrationPm2p5 / 10.0);
+        Serial.print(massConcentrationPm2p5);
         Serial.print("\t");
         Serial.print("MassConcentrationPm4p0:");
-        Serial.print(massConcentrationPm4p0 / 10.0);
+        Serial.print(massConcentrationPm4p0);
         Serial.print("\t");
         Serial.print("MassConcentrationPm10p0:");
-        Serial.print(massConcentrationPm10p0 / 10.0);
+        Serial.print(massConcentrationPm10p0);
         Serial.print("\t");
         Serial.print("AmbientHumidity:");
-        Serial.print(ambientHumidity / 100.0);
+        Serial.print(ambientHumidity);
         Serial.print("\t");
         Serial.print("AmbientTemperature:");
-        Serial.print(ambientTemperature / 200.0);
+        Serial.print(ambientTemperature);
         Serial.print("\t");
         Serial.print("VocIndex:");
-        Serial.print(vocIndex / 10.0);
+        Serial.print(vocIndex);
         Serial.print("\t");
         Serial.print("NoxIndex:");
-        if (noxIndex == 0x7FFF) {
-            Serial.println("n/a");
+        if (isnan(noxIndex)) {
+            Serial.print("n/a");
         } else {
-            Serial.println(noxIndex / 10.0);
+            Serial.print(noxIndex);
         }
+        Serial.print("\t");
+    }
+
+    float numberConcentrationPm0p5;
+    float numberConcentrationPm1p0;
+    float numberConcentrationPm2p5;
+    float numberConcentrationPm4p0;
+    float numberConcentrationPm10p0;
+    float typicalParticleSize;
+
+    error = sen5x.readMeasuredPmValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, numberConcentrationPm0p5,
+        numberConcentrationPm1p0, numberConcentrationPm2p5,
+        numberConcentrationPm4p0, numberConcentrationPm10p0,
+        typicalParticleSize);
+
+    if (error) {
+        Serial.println("");
+        Serial.print("Error trying to execute readMeasuredPmValues(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    } else {
+        Serial.print("NumberConcentrationPm0p5:");
+        Serial.print(numberConcentrationPm0p5);
+        Serial.print("\t");
+        Serial.print("NumberConcentrationPm1p0:");
+        Serial.print(numberConcentrationPm1p0);
+        Serial.print("\t");
+        Serial.print("NumberConcentrationPm2p5:");
+        Serial.print(numberConcentrationPm2p5);
+        Serial.print("\t");
+        Serial.print("NumberConcentrationPm4p0:");
+        Serial.print(numberConcentrationPm4p0);
+        Serial.print("\t");
+        Serial.print("NumberConcentrationPm10p0:");
+        Serial.print(numberConcentrationPm10p0);
+        Serial.print("\t");
+        Serial.print("TypicalParticleSize:");
+        Serial.println(typicalParticleSize);
     }
 }
