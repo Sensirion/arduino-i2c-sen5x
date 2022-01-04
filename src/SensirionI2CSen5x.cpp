@@ -346,6 +346,31 @@ uint16_t SensirionI2CSen5x::startFanCleaning() {
     return error;
 }
 
+uint16_t SensirionI2CSen5x::setTemperatureOffsetSimple(float tempOffset) {
+    int16_t defaultSlope = 0;
+    uint16_t defaultTimeConstant = 0;
+    int16_t tempOffsetTicks = static_cast<int16_t>(tempOffset * 200);
+    return setTemperatureOffsetParameters(tempOffsetTicks, defaultSlope,
+                                          defaultTimeConstant);
+}
+
+uint16_t SensirionI2CSen5x::getTemperatureOffsetSimple(float& tempOffset) {
+    int16_t tempOffsetTicks;
+    int16_t slope;
+    uint16_t timeConstant;
+    uint16_t error = 0;
+
+    error =
+        getTemperatureOffsetParameters(tempOffsetTicks, slope, timeConstant);
+    if (error) {
+        return error;
+    }
+
+    tempOffset = static_cast<float>(tempOffsetTicks) / 200.0f;
+
+    return NoError;
+}
+
 uint16_t SensirionI2CSen5x::setTemperatureOffsetParameters(
     int16_t tempOffset, int16_t slope, uint16_t timeConstant) {
     uint16_t error = 0;

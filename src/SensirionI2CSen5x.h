@@ -413,6 +413,31 @@ class SensirionI2CSen5x {
     uint16_t startFanCleaning(void);
 
     /**
+     * setTemperatureOffsetSimple() - Sets the temperature offset parameter
+     * in degrees celsius for the device, while leaving the other parameters at
+     * their default setting.
+     *
+     * @param tempOffset Constant temperature offset in degrees celsius.
+     * The default value is 0.
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t setTemperatureOffsetSimple(float tempOffset);
+
+    /**
+     * getTemperatureOffsetSimple() - Gets the temperature offset parameter
+     * in degrees celsius from the device.
+     * @note The other parameters, such as slope and time constant may differ
+     * from the default values, if they were previously set using
+     * `setTemperatureOffsetParameters`.
+     *
+     * @param tempOffset Constant temperature offset in degrees celsius.
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t getTemperatureOffsetSimple(float& tempOffset);
+
+    /**
      * setTemperatureOffsetParameters() - Sets the temperature offset parameters
      * for the device.
      *
