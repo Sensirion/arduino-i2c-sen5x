@@ -7,6 +7,7 @@ modules I2C interface.
 
 ## Supported sensors
 
+- SEN50 (only particulate matter signals available)
 - SEN54 (no NOx signal available)
 - SEN55 (full feature set)
 

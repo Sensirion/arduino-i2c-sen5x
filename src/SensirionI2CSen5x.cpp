@@ -231,6 +231,22 @@ uint16_t SensirionI2CSen5x::readMeasuredRawValues(int16_t& rawHumidity,
     return error;
 }
 
+uint16_t SensirionI2CSen5x::readMeasuredValuesSen50(
+    float& massConcentrationPm1p0, float& massConcentrationPm2p5,
+    float& massConcentrationPm4p0, float& massConcentrationPm10p0) {
+
+    uint16_t error = 0;
+    float ambientHumidityDummy;
+    float ambientTemperatureDummy;
+    float vocIndexDummy;
+    float noxIndexDummy;
+    error = readMeasuredValues(massConcentrationPm1p0, massConcentrationPm2p5,
+                               massConcentrationPm4p0, massConcentrationPm10p0,
+                               ambientHumidityDummy, ambientTemperatureDummy,
+                               vocIndexDummy, noxIndexDummy);
+    return error;
+}
+
 uint16_t SensirionI2CSen5x::readMeasuredPmValues(
     float& massConcentrationPm1p0, float& massConcentrationPm2p5,
     float& massConcentrationPm4p0, float& massConcentrationPm10p0,
