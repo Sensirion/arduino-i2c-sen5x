@@ -1,3 +1,4 @@
+
 /*
  * I2C-Generator: 0.3.0
  * Yaml Version: 2.1.3
@@ -217,13 +218,25 @@ void loop() {
         Serial.print(massConcentrationPm10p0);
         Serial.print("\t");
         Serial.print("AmbientHumidity:");
-        Serial.print(ambientHumidity);
+        if (isnan(ambientHumidity)) {
+            Serial.print("n/a");
+        } else {
+            Serial.print(ambientHumidity);
+        }
         Serial.print("\t");
         Serial.print("AmbientTemperature:");
-        Serial.print(ambientTemperature);
+        if (isnan(ambientTemperature)) {
+            Serial.print("n/a");
+        } else {
+            Serial.print(ambientTemperature);
+        }
         Serial.print("\t");
         Serial.print("VocIndex:");
-        Serial.print(vocIndex);
+        if (isnan(vocIndex)) {
+            Serial.print("n/a");
+        } else {
+            Serial.print(vocIndex);
+        }
         Serial.print("\t");
         Serial.print("NoxIndex:");
         if (isnan(noxIndex)) {

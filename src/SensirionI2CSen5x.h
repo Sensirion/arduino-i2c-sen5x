@@ -58,12 +58,12 @@ class SensirionI2CSen5x {
     /**
      * startMeasurement() - Starts a continuous measurement.
 
-    After starting the measurement, it takes some time (~1s) until the first
-    measurement results are available. You could poll with the command
-    0x0202 \"Read Data Ready\" to check when the results are ready to read.
-
-    This command is only available in idle mode. If the device is already
-    in any measure mode, this command has no effect.
+     * After starting the measurement, it takes some time (~1s) until the first
+     * measurement results are available. You could poll with the command
+     * 0x0202 \"Read Data Ready\" to check when the results are ready to read.
+     *
+     * This command is only available in idle mode. If the device is already
+     * in any measure mode, this command has no effect.
      *
      * @return 0 on success, an error code otherwise
      */
@@ -71,15 +71,17 @@ class SensirionI2CSen5x {
 
     /**
      * startMeasurementWithoutPm() - Starts a continuous measurement without PM.
-    Only humidity, temperature, VOC and NOx are available in this mode. Laser
-    and fan are switched off to keep power consumption low.
-
-    After starting the measurement, it takes some time (~1s) until the first
-    measurement results are available. You could poll with the command
-    0x0202 \"Read Data Ready\" to check when the results are ready to read.
-
-    This command is only available in idle mode. If the device is already
-    in any measure mode, this command has no effect.
+     * Only humidity, temperature, VOC and NOx are available in this mode. Laser
+     * and fan are switched off to keep power consumption low.
+     *
+     * After starting the measurement, it takes some time (~1s) until the first
+     * measurement results are available. You could poll with the command
+     * 0x0202 \"Read Data Ready\" to check when the results are ready to read.
+     *
+     * This command is only available in idle mode. If the device is already
+     * in any measure mode, this command has no effect.
+     *
+     * Supported sensors: SEN54, SEN55
      *
      * @return 0 on success, an error code otherwise
      */
@@ -87,8 +89,8 @@ class SensirionI2CSen5x {
 
     /**
      * stopMeasurement() - Stops the measurement and returns to idle mode.
-
-    If the device is already in idle mode, this command has no effect.
+     *
+     * If the device is already in idle mode, this command has no effect.
      *
      * @return 0 on success, an error code otherwise
      */
@@ -116,46 +118,38 @@ class SensirionI2CSen5x {
 
     /**
      * readMeasuredValues() - Returns the measured values.
-
-    The command 0x0202 \"Read Data Ready\" can be used to check if new
-    data is available since the last read operation. If no new data is
-    available, the previous values will be returned again. If no data is
-    available at all (e.g. measurement not running for at least one
-    second), all values will be NAN.
+     *
+     * The command 0x0202 \"Read Data Ready\" can be used to check if new
+     * data is available since the last read operation. If no new data is
+     * available, the previous values will be returned again. If no data is
+     * available at all (e.g. measurement not running for at least one
+     * second), all values will be NAN.
      *
      * @param massConcentrationPm1p0  PM1.0 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param massConcentrationPm2p5  PM2.5 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param massConcentrationPm4p0  PM4.0 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param massConcentrationPm10p0  PM10.0 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param ambientHumidity RH [%]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param ambientTemperature T [°C]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param vocIndex  VOC Index
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param noxIndex  NOx Index
-
-    *Note: If this value is unknown, NAN is returned. During
-    the first 10..11 seconds after power-on or device reset, this
-    value will be NAN as well.*
+     * Note: If this value is unknown, which is true for SEN54,
+     * NAN is returned. During the first 10..11 seconds after
+     * power-on or device reset, this value will be NAN as well.*
      *
      * @return 0 on success, an error code otherwise
      */
@@ -170,53 +164,45 @@ class SensirionI2CSen5x {
     /**
      * readMeasuredValuesAsIntegers() - Returns the measured values
      * without scaling factors applied.
-
-    The command 0x0202 \"Read Data Ready\" can be used to check if new
-    data is available since the last read operation. If no new data is
-    available, the previous values will be returned again. If no data is
-    available at all (e.g. measurement not running for at least one
-    second), all values will be at their upper limit (0xFFFF for `uint16`,
-    0x7FFF for `int16`).
      *
-     * @param massConcentrationPm1p0 Value is scaled with factor 10: PM1.0
-    [µg/m³] = value / 10
-
-    *Note: If this value is unknown, 0xFFFF is returned.*
+     * The command 0x0202 \"Read Data Ready\" can be used to check if new
+     * data is available since the last read operation. If no new data is
+     * available, the previous values will be returned again. If no data is
+     * available at all (e.g. measurement not running for at least one
+     * second), all values will be at their upper limit (0xFFFF for `uint16`,
+     * 0x7FFF for `int16`).
      *
-     * @param massConcentrationPm2p5 Value is scaled with factor 10: PM2.5
-    [µg/m³] = value / 10
-
-    *Note: If this value is unknown, 0xFFFF is returned.*
+     * @param massConcentrationPm1p0 Value is scaled with factor 10:
+     *                               PM1.0 [µg/m³] = value / 10
+     * Note: If this value is unknown, 0xFFFF is returned.*
      *
-     * @param massConcentrationPm4p0 Value is scaled with factor 10: PM4.0
-    [µg/m³] = value / 10
-
-    *Note: If this value is unknown, 0xFFFF is returned.*
+     * @param massConcentrationPm2p5 Value is scaled with factor 10:
+     *                               PM2.5 [µg/m³] = value / 10
+     * Note: If this value is unknown, 0xFFFF is returned.*
      *
-     * @param massConcentrationPm10p0 Value is scaled with factor 10: PM10.0
-    [µg/m³] = value / 10
-
-    *Note: If this value is unknown, 0xFFFF is returned.*
+     * @param massConcentrationPm4p0 Value is scaled with factor 10:
+     *                               PM4.0 [µg/m³] = value / 10
+     * Note: If this value is unknown, 0xFFFF is returned.*
      *
-     * @param ambientHumidity Value is scaled with factor 100: RH [%] = value /
-    100
-
-    *Note: If this value is unknown, 0x7FFF is returned.*
+     * @param massConcentrationPm10p0 Value is scaled with factor 10:
+     *                                PM10.0 [µg/m³] = value / 10
+     * Note: If this value is unknown, 0xFFFF is returned.*
      *
-     * @param ambientTemperature Value is scaled with factor 200: T [°C] = value
-    / 200
-
-    *Note: If this value is unknown, 0x7FFF is returned.*
+     * @param ambientHumidity Value is scaled with factor 100:
+     *                        RH [%] = value /100
+     * Note: If this value is unknown, 0x7FFF is returned.*
+     *
+     * @param ambientTemperature Value is scaled with factor 200:
+     *                           T [°C] = value / 200
+     * Note: If this value is unknown, 0x7FFF is returned.*
      *
      * @param vocIndex Value is scaled with factor 10: VOC Index = value / 10
-
-    *Note: If this value is unknown, 0x7FFF is returned.*
+     * Note: If this value is unknown, 0x7FFF is returned.*
      *
      * @param noxIndex Value is scaled with factor 10: NOx Index = value / 10
-
-    *Note: If this value is unknown, 0x7FFF is returned. During
-    the first 10..11 seconds after power-on or device reset, this
-    value will be 0x7FFF as well.*
+     * Note: If this value is unknown, which is the case for SEN54,
+     * 0x7FFF is returned. During the first 10..11 seconds after power-on
+     * or device reset, this value will be 0x7FFF as well.*
      *
      * @return 0 on success, an error code otherwise
      */
@@ -230,32 +216,30 @@ class SensirionI2CSen5x {
 
     /**
      * readMeasuredRawValues() - Returns the measured raw values.
-
-    The command 0x0202 \"Read Data Ready\" can be used to check if new
-    data is available since the last read operation. If no new data is
-    available, the previous values will be returned again. If no data
-    is available at all (e.g. measurement not running for at least one
-    second), all values will be at their upper limit (0xFFFF for `uint16`,
-    0x7FFF for `int16`).
+     *
+     * The command 0x0202 \"Read Data Ready\" can be used to check if new
+     * data is available since the last read operation. If no new data is
+     * available, the previous values will be returned again. If no data
+     * is available at all (e.g. measurement not running for at least one
+     * second), all values will be at their upper limit (0xFFFF for `uint16`,
+     * 0x7FFF for `int16`).
+     *
+     * Supported sensors: SEN54 (no NOx), SEN55
      *
      * @param rawHumidity Value is scaled with factor 100: RH [%] = value / 100
-
-    *Note: If this value is unknown, 0x7FFF is returned.*
+     * Note: If this value is unknown, 0x7FFF is returned.*
      *
-     * @param rawTemperature Value is scaled with factor 200: T [°C] = value /
-    200
-
-    *Note: If this value is unknown, 0x7FFF is returned.*
+     * @param rawTemperature Value is scaled with factor 200:
+     *                       T [°C] = value / 200
+     * Note: If this value is unknown, 0x7FFF is returned.*
      *
      * @param rawVoc Raw measured VOC ticks without scale factor.
-
-    *Note: If this value is unknown, 0xFFFF is returned.*
+     * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param rawNox Raw measured NOx ticks without scale factor.
-
-    *Note: If this value is unknown, 0xFFFF is returned. During
-    the first 10..11 seconds after power-on or device reset, this
-    value will be 0xFFFF as well.*
+     * Note: If this value is unknown, which is the case for SEN54,
+     * 0x7FFF is returned. During the first 10..11 seconds after power-on
+     * or device reset, this value will be 0x7FFF as well.*
      *
      * @return 0 on success, an error code otherwise
      */
@@ -264,53 +248,71 @@ class SensirionI2CSen5x {
                                    uint16_t& rawNox);
 
     /**
-     * readMeasuredPmValues() - Returns the measured particulate matter values.
-
-    The command 0x0202 \"Read Data Ready\" can be used to check if new
-    data is available since the last read operation. If no new data is
-    available, the previous values will be returned again. If no data
-    is available at all (e.g. measurement not running for at least one
-    second), all values will be NAN.
+     * readMeasuredValuesSen50() - Returns the measured values for SEN50.
+     *
+     * The command 0x0202 \"Read Data Ready\" can be used to check if new
+     * data is available since the last read operation. If no new data is
+     * available, the previous values will be returned again. If no data is
+     * available at all (e.g. measurement not running for at least one
+     * second), all values will be NAN.
      *
      * @param massConcentrationPm1p0  PM1.0 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param massConcentrationPm2p5  PM2.5 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param massConcentrationPm4p0  PM4.0 [µg/m³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param massConcentrationPm10p0  PM10.0 [µg/m³]
+     * Note: If this value is unknown, NAN is returned.*
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t readMeasuredValuesSen50(float& massConcentrationPm1p0,
+                                     float& massConcentrationPm2p5,
+                                     float& massConcentrationPm4p0,
+                                     float& massConcentrationPm10p0);
 
-    *Note: If this value is unknown, NAN is returned.*
+    /**
+     * readMeasuredPmValues() - Returns the measured particulate matter values.
+     *
+     * The command 0x0202 \"Read Data Ready\" can be used to check if new
+     * data is available since the last read operation. If no new data is
+     * available, the previous values will be returned again. If no data
+     * is available at all (e.g. measurement not running for at least one
+     * second), all values will be NAN.
+     *
+     * @param massConcentrationPm1p0  PM1.0 [µg/m³]
+     * Note: If this value is unknown, NAN is returned.*
+     *
+     * @param massConcentrationPm2p5  PM2.5 [µg/m³]
+     * Note: If this value is unknown, NAN is returned.*
+     *
+     * @param massConcentrationPm4p0  PM4.0 [µg/m³]
+     * Note: If this value is unknown, NAN is returned.*
+     *
+     * @param massConcentrationPm10p0  PM10.0 [µg/m³]
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param numberConcentrationPm0p5  PM0.5 [#/cm³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param numberConcentrationPm1p0  PM1.0 [#/cm³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param numberConcentrationPm2p5  PM2.5 [#/cm³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param numberConcentrationPm4p0  PM4.0 [#/cm³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param numberConcentrationPm10p0  PM10.0 [#/cm³]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @param typicalParticleSize Size [µm]
-
-    *Note: If this value is unknown, NAN is returned.*
+     * Note: If this value is unknown, NAN is returned.*
      *
      * @return 0 on success, an error code otherwise
      */
@@ -322,68 +324,57 @@ class SensirionI2CSen5x {
         float& numberConcentrationPm10p0, float& typicalParticleSize);
 
     /**
-         * readMeasuredPmValuesAsIntegers() - Returns the measured particulate
-        matter values.
-
-        The command 0x0202 \"Read Data Ready\" can be used to check if new
-        data is available since the last read operation. If no new data is
-        available, the previous values will be returned again. If no data
-        is available at all (e.g. measurement not running for at least one
-        second), all values will be 0xFFFF.
-         *
-         * @param massConcentrationPm1p0 Value is scaled with factor 10: PM1.0
-        [µg/m³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param massConcentrationPm2p5 Value is scaled with factor 10: PM2.5
-        [µg/m³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param massConcentrationPm4p0 Value is scaled with factor 10: PM4.0
-        [µg/m³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param massConcentrationPm10p0 Value is scaled with factor 10: PM10.0
-        [µg/m³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param numberConcentrationPm0p5 Value is scaled with factor 10: PM0.5
-        [#/cm³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param numberConcentrationPm1p0 Value is scaled with factor 10: PM1.0
-        [#/cm³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param numberConcentrationPm2p5 Value is scaled with factor 10: PM2.5
-        [#/cm³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param numberConcentrationPm4p0 Value is scaled with factor 10: PM4.0
-        [#/cm³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param numberConcentrationPm10p0 Value is scaled with factor 10:
-       PM10.0
-        [#/cm³] = value / 10
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @param typicalParticleSize Value is scaled with factor 1000: Size
-       [µm] = value / 1000
-
-        *Note: If this value is unknown, 0xFFFF is returned.*
-         *
-         * @return 0 on success, an error code otherwise
-         */
+     * readMeasuredPmValuesAsIntegers() - Returns the measured particulate
+     * matter values.
+     *
+     * The command 0x0202 \"Read Data Ready\" can be used to check if new
+     * data is available since the last read operation. If no new data is
+     * available, the previous values will be returned again. If no data
+     * is available at all (e.g. measurement not running for at least one
+     * second), all values will be 0xFFFF.
+     *
+     * @param massConcentrationPm1p0 Value is scaled with factor 10:
+     *                               PM1.0 [µg/m³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param massConcentrationPm2p5 Value is scaled with factor 10:
+     *                               PM2.5 [µg/m³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param massConcentrationPm4p0 Value is scaled with factor 10:
+     *                               PM4.0 [µg/m³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param massConcentrationPm10p0 Value is scaled with factor 10:
+     *                                PM10.0 [µg/m³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param numberConcentrationPm0p5 Value is scaled with factor 10:
+     *                                 PM0.5 [#/cm³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param numberConcentrationPm1p0 Value is scaled with factor 10:
+     *                                 PM1.0 [#/cm³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param numberConcentrationPm2p5 Value is scaled with factor 10:
+     *                                 PM2.5 [#/cm³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param numberConcentrationPm4p0 Value is scaled with factor 10:
+     *                                 PM4.0 [#/cm³] = value / 1
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param numberConcentrationPm10p0 Value is scaled with factor 10:
+     *                                  PM10.0 [#/cm³] = value / 10
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @param typicalParticleSize Value is scaled with factor 1000:
+     *                            Size [µm] = value / 1000
+     * Note: If this value is unknown, 0xFFFF is returned.*
+     *
+     * @return 0 on success, an error code otherwise
+     */
     uint16_t readMeasuredPmValuesAsIntegers(
         uint16_t& massConcentrationPm1p0, uint16_t& massConcentrationPm2p5,
         uint16_t& massConcentrationPm4p0, uint16_t& massConcentrationPm10p0,
@@ -393,20 +384,20 @@ class SensirionI2CSen5x {
 
     /**
      * startFanCleaning() - Starts the fan cleaning manually. The \"data
-    ready\"-flag will be cleared immediately and during the next few seconds, no
-    new measurement results will be available (old values will be returned).
-    Once the cleaning is finished, the \"data ready\"-flag will be set and new
-    measurement results will be available.
-
-    When executing this command while cleaning is already active, the
-    command does nothing.
-
-    If you stop the measurement while fan cleaning is active, the cleaning
-    will be aborted immediately.
+     * ready\"-flag will be cleared immediately and during the next few seconds,
+     * no new measurement results will be available (old values will be
+     * returned). Once the cleaning is finished, the \"data ready\"-flag will be
+     * set and new measurement results will be available.
+     *
+     * When executing this command while cleaning is already active, the
+     * command does nothing.
+     *
+     * If you stop the measurement while fan cleaning is active, the cleaning
+     * will be aborted immediately.
      *
      * @note This command is only available in measure mode with PM measurement
-    enabled, i.e. only if the fan is already running. In any other state, this
-    command does nothing.
+     * enabled, i.e. only if the fan is already running. In any other state,
+     * this command does nothing.
      *
      * @return 0 on success, an error code otherwise
      */
@@ -416,6 +407,8 @@ class SensirionI2CSen5x {
      * setTemperatureOffsetSimple() - Sets the temperature offset parameter
      * in degrees celsius for the device, while leaving the other parameters at
      * their default setting.
+     *
+     * Supported sensors: SEN54, SEN55
      *
      * @param tempOffset Constant temperature offset in degrees celsius.
      * The default value is 0.
@@ -431,6 +424,8 @@ class SensirionI2CSen5x {
      * from the default values, if they were previously set using
      * `setTemperatureOffsetParameters`.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @param tempOffset Constant temperature offset in degrees celsius.
      *
      * @return 0 on success, an error code otherwise
@@ -440,6 +435,8 @@ class SensirionI2CSen5x {
     /**
      * setTemperatureOffsetParameters() - Sets the temperature offset parameters
      * for the device.
+     *
+     * Supported sensors: SEN54, SEN55
      *
      * @param tempOffset Constant temperature offset scaled with factor 200 (T
      * [°C] = value / 200). The default value is 0.
@@ -462,6 +459,8 @@ class SensirionI2CSen5x {
      * getTemperatureOffsetParameters() - Gets the temperature offset parameters
      * from the device.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @param tempOffset Constant temperature offset scaled with factor 200 (T
      * [°C] = value / 200).
      *
@@ -480,6 +479,8 @@ class SensirionI2CSen5x {
     /**
      * setWarmStartParameter() - Sets the warm start parameter for the device.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @note This parameter can be changed in any state of the device (and the
      * getter immediately returns the new value), but it is applied only the
      * next time starting a measurement, i.e. when sending a \"Start
@@ -496,6 +497,8 @@ class SensirionI2CSen5x {
     /**
      * getWarmStartParameter() - Gets the warm start parameter from the device.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @param warmStart Warm start behavior as a value in the range from 0 (cold
      * start) to 65535 (warm start).
      *
@@ -506,6 +509,8 @@ class SensirionI2CSen5x {
     /**
      * setVocAlgorithmTuningParameters() - Sets the tuning parameters of the VOC
      * algorithm.
+     *
+     * Supported sensors: SEN54, SEN55
      *
      * @note This command is available only in idle mode. In measure mode, this
      * command has no effect. In addition, it has no effect if at least one
@@ -550,6 +555,8 @@ class SensirionI2CSen5x {
      * getVocAlgorithmTuningParameters() - Gets the currently set tuning
      * parameters of the VOC algorithm.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @param indexOffset VOC index representing typical (average) conditions.
      *
      * @param learningTimeOffsetHours Time constant to estimate the VOC
@@ -583,6 +590,8 @@ class SensirionI2CSen5x {
     /**
      * setNoxAlgorithmTuningParameters() - Sets the tuning parameters of the NOx
      * algorithm.
+     *
+     * Supported sensors: SEN55
      *
      * @note This command is available only in idle mode. In measure mode, this
      * command has no effect. In addition, it has no effect if at least one
@@ -627,6 +636,8 @@ class SensirionI2CSen5x {
      * getNoxAlgorithmTuningParameters() - Gets the currently set tuning
      * parameters of the NOx algorithm.
      *
+     * Supported sensors: SEN55
+     *
      * @param indexOffset NOx index representing typical (average) conditions.
      *
      * @param learningTimeOffsetHours Time constant to estimate the NOx
@@ -661,6 +672,8 @@ class SensirionI2CSen5x {
     /**
      * setRhtAccelerationMode() - Sets the RH/T acceleration mode.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @note This parameter can be changed in any state of the device (and the
      * getter immediately returns the new value), but it is applied only the
      * next time starting a measurement, i.e. when sending a \"Start
@@ -676,6 +689,8 @@ class SensirionI2CSen5x {
     /**
      * getRhtAccelerationMode() - Gets the RH/T acceleration mode.
      *
+     * Supported sensors: SEN54, SEN55
+     *
      * @param mode The current RH/T acceleration mode.
      *
      * @return 0 on success, an error code otherwise
@@ -685,6 +700,8 @@ class SensirionI2CSen5x {
     /**
      * setVocAlgorithmState() - Sets the VOC algorithm state previously received
      * with the \"Get VOC Algorithm State\" command.
+     *
+     * Supported sensors: SEN54, SEN55
      *
      * @note This command is only available in idle mode and the state will be
      * applied only once when starting the next measurement. Any further
@@ -700,14 +717,16 @@ class SensirionI2CSen5x {
 
     /**
      * getVocAlgorithmState() - Gets the current VOC algorithm state. This data
-    can be used to restore the state with the \"Set VOC Algorithm State\"
-    command after a short power cycle or device reset.
-
-    This command can be used either in measure mode or in idle mode
-    (which will then return the state at the time when the measurement
-    was stopped). In measure mode, the state can be read each measure
-    interval to always have the latest state available, even in case of
-    a sudden power loss.
+     * can be used to restore the state with the \"Set VOC Algorithm State\"
+     * command after a short power cycle or device reset.
+     *
+     * This command can be used either in measure mode or in idle mode
+     * (which will then return the state at the time when the measurement
+     * was stopped). In measure mode, the state can be read each measure
+     * interval to always have the latest state available, even in case of
+     * a sudden power loss.
+     *
+     * Supported sensors: SEN54, SEN55
      *
      * @param state Current VOC algorithm state.
      *
@@ -789,22 +808,23 @@ class SensirionI2CSen5x {
 
     /**
      * readDeviceStatus() - Reads the current device status.
-
-    Use this command to get detailed information about the device status.
-    The device status is encoded in flags. Each device status flag
-    represents a single bit in a 32-bit integer value. If more than one
-    error is present, the device status register value is the sum of the
-    corresponding flag values. For details about the available flags,
-    refer to the device status flags documentation.
+     *
+     * Use this command to get detailed information about the device status.
+     * The device status is encoded in flags. Each device status flag
+     * represents a single bit in a 32-bit integer value. If more than one
+     * error is present, the device status register value is the sum of the
+     * corresponding flag values. For details about the available flags,
+     * refer to the device status flags documentation.
      *
      * @note The status flags of type \"Error\" are sticky, i.e. they are not
-    cleared automatically even if the error condition no longer exists. So they
-    can only be cleared manually with the command 0xD210 \"Read And Clear Device
-    Status\" or with a device reset. All other flags are not sticky, i.e. they
-    are cleared automatically if the trigger condition disappears.
+     * cleared automatically even if the error condition no longer exists. So
+     * they can only be cleared manually with the command 0xD210 \"Read And
+     * Clear Device Status\" or with a device reset. All other flags are not
+     * sticky, i.e. they are cleared automatically if the trigger condition
+     * disappears.
      *
      * @param deviceStatus Device status (32 flags as an integer value). For
-    details, please refer to the device status flags documentation.
+     * details, please refer to the device status flags documentation.
      *
      * @return 0 on success, an error code otherwise
      */
