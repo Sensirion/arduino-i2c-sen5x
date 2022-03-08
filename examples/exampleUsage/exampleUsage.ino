@@ -142,6 +142,7 @@ void setup() {
 #endif
 
     // set a temperature offset in degrees celsius
+    // Note: supported by SEN54 and SEN55 sensors
     // By default, the temperature and humidity outputs from the sensor
     // are compensated for the modules self-heating. If the module is
     // designed into a device, the temperature compensation might need
@@ -167,7 +168,7 @@ void setup() {
     } else {
         Serial.print("Temperature Offset set to ");
         Serial.print(tempOffset);
-        Serial.println(" deg. Celsius");
+        Serial.println(" deg. Celsius (SEN54/SEN55 only");
     }
 
     // Start Measurement
