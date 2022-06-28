@@ -306,7 +306,7 @@ uint16_t SensirionI2CSen5x::readMeasuredPmValues(
                                     : numberConcentrationPm10p0Int / 10.0f;
     typicalParticleSize = typicalParticleSizeInt == UINT_INVALID
                               ? NAN
-                              : typicalParticleSizeInt / 10.0f;
+                              : typicalParticleSizeInt / 1000.0f;
 
     return NoError;
 }
