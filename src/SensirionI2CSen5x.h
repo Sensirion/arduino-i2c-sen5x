@@ -334,35 +334,35 @@ class SensirionI2CSen5x {
      * second), all values will be 0xFFFF.
      *
      * @param massConcentrationPm1p0 Value is scaled with factor 10:
-     *                               PM1.0 [µg/m³] = value / 1
+     *                               PM1.0 [µg/m³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param massConcentrationPm2p5 Value is scaled with factor 10:
-     *                               PM2.5 [µg/m³] = value / 1
+     *                               PM2.5 [µg/m³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param massConcentrationPm4p0 Value is scaled with factor 10:
-     *                               PM4.0 [µg/m³] = value / 1
+     *                               PM4.0 [µg/m³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param massConcentrationPm10p0 Value is scaled with factor 10:
-     *                                PM10.0 [µg/m³] = value / 1
+     *                                PM10.0 [µg/m³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param numberConcentrationPm0p5 Value is scaled with factor 10:
-     *                                 PM0.5 [#/cm³] = value / 1
+     *                                 PM0.5 [#/cm³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param numberConcentrationPm1p0 Value is scaled with factor 10:
-     *                                 PM1.0 [#/cm³] = value / 1
+     *                                 PM1.0 [#/cm³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param numberConcentrationPm2p5 Value is scaled with factor 10:
-     *                                 PM2.5 [#/cm³] = value / 1
+     *                                 PM2.5 [#/cm³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param numberConcentrationPm4p0 Value is scaled with factor 10:
-     *                                 PM4.0 [#/cm³] = value / 1
+     *                                 PM4.0 [#/cm³] = value / 10
      * Note: If this value is unknown, 0xFFFF is returned.*
      *
      * @param numberConcentrationPm10p0 Value is scaled with factor 10:
