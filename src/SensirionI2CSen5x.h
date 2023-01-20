@@ -50,7 +50,7 @@ class SensirionI2CSen5x {
     /**
      * begin() - Initializes the SensirionI2CSen5x class.
      *
-     * @param serial Arduino stream object to be communicated with.
+     * @param i2cBus Arduino stream object to use for communication.
      *
      */
     void begin(TwoWire& i2cBus);
@@ -238,8 +238,8 @@ class SensirionI2CSen5x {
      *
      * @param rawNox Raw measured NOx ticks without scale factor.
      * Note: If this value is unknown, which is the case for SEN54,
-     * 0x7FFF is returned. During the first 10..11 seconds after power-on
-     * or device reset, this value will be 0x7FFF as well.*
+     * 0xFFFF is returned. During the first 10..11 seconds after power-on
+     * or device reset, this value will be 0xFFFF as well.*
      *
      * @return 0 on success, an error code otherwise
      */
