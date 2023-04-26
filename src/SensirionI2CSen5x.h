@@ -62,8 +62,11 @@ class SensirionI2CSen5x {
      * measurement results are available. You could poll with the command
      * 0x0202 \"Read Data Ready\" to check when the results are ready to read.
      *
-     * This command is only available in idle mode. If the device is already
-     * in any measure mode, this command has no effect.
+     * If the device is in measure mode without particulate matter (low-power)
+     * and the firmware version is at least 2.0, this command enables PM
+     * measurement without affecting the already running RH/T/VOC/NOx
+     * measurements (except that the \"data ready\"-flag will be cleared). In
+     * previous firmware versions, this command is supported only in idle mode.
      *
      * @return 0 on success, an error code otherwise
      */
@@ -78,8 +81,11 @@ class SensirionI2CSen5x {
      * measurement results are available. You could poll with the command
      * 0x0202 \"Read Data Ready\" to check when the results are ready to read.
      *
-     * This command is only available in idle mode. If the device is already
-     * in any measure mode, this command has no effect.
+     * If the device is in measure mode with particulate matter (normal measure
+     * mode) and the firmware version is at least 2.0, this command disables PM
+     * measurement without affecting the already running RH/T/VOC/NOx
+     * measurements (except that the \"data ready\"-flag will be cleared). In
+     * previous firmware versions, this command is supported only in idle mode.
      *
      * Supported sensors: SEN54, SEN55
      *
