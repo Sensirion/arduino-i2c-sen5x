@@ -35,9 +35,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Arduino.h>
-#include <SensirionI2CSen5x.h>
-#include <Wire.h>
+#include <SensirionCore.h>// Click here to get the library: http://librarymanager/All#Sensirion_Core_Base
+
+#include <SensirionI2CSen5x.h>// Click here to get the library: http://librarymanager/All#Sensirion_Sen5x
+SensirionI2CSen5x sen5x;
 
 // The used commands use up to 48 bytes. On some Arduino's the default buffer
 // space is not large enough
@@ -48,8 +49,6 @@
     (defined(BUFFER_LENGTH) && BUFFER_LENGTH >= MAXBUF_REQUIREMENT)
 #define USE_PRODUCT_INFO
 #endif
-
-SensirionI2CSen5x sen5x;
 
 void printModuleVersions() {
     uint16_t error;
